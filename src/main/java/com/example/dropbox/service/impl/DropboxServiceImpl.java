@@ -69,15 +69,21 @@ public class DropboxServiceImpl implements DropboxService {
     @Override
     public String getPlanAndLicense(String accessToken) throws IOException {
         String response = getTeamInfo(accessToken);
-        JsonNode root = objectMapper.readTree(response).path("profile");
 
-        String planType = root.path("plan_type").asText("N/A");
-        int teamMemberLimit = root.path("team_member_limit").asInt(0);
-        String licenseType = root.path("license_type").asText("N/A");
+        JsonNode root = objectMapper.readTree(response);
 
-        return String.format("Plan Type: %s, Team Member Limit: %d, License Type: %s",
-                planType, teamMemberLimit, licenseType);
+        String teamName = root.path("name").path("display_name").asText("N/A");
+
+        int teamMemberLimit = root.path("num_licensed_users").asInt(0);
+        int usedLicenses = root.path("num_used_licenses").asInt(0);
+
+        String planType = "Business";
+        String licenseType = "Team";
+
+        return String.format("Team Name: %s, Plan Type: %s, Team Member Limit: %d, Used Licenses: %d, License Type: %s",
+                teamName, planType, teamMemberLimit, usedLicenses, licenseType);
     }
+
 
     // Retrieves all team members (up to 100 by default)
     @Override
