@@ -15,5 +15,4 @@ The goal of this assignment is to:
 3. Implement one API in Java to fetch data and print the results.
 4. Include Postman tests and screenshots for each API.
 
-## Folder Structure
 
